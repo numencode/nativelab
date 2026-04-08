@@ -20,9 +20,6 @@ new class extends Component
     public ?string $status = null;
     public ?string $error = null;
 
-    public string $slideChoice = 'center'; // left|center|right
-    public ?string $slideLastAction = null;
-
     public function mount(): void
     {
         $this->isNative = ! empty(env('NATIVEPHP_PLATFORM'));
@@ -83,28 +80,6 @@ new class extends Component
             Dialog::toast("Pressed: {$label}");
         } catch (\Throwable $e) {
             // ignore (toast may fail in some contexts)
-        }
-    }
-
-    public function slidePicked(string $choice): void
-    {
-        $this->resetStatus();
-
-        $choice = in_array($choice, ['left', 'center', 'right'], true) ? $choice : 'center';
-        $this->slideChoice = $choice;
-        $this->slideLastAction = match ($choice) {
-            'left' => 'Selected LEFT action',
-            'center' => 'Selected CENTER action',
-            'right' => 'Selected RIGHT action',
-        };
-
-        // Optional: show feedback as toast in native runtime
-        if ($this->isNative) {
-            try {
-                Dialog::toast($this->slideLastAction);
-            } catch (\Throwable $e) {
-                // ignore
-            }
         }
     }
 
@@ -206,62 +181,6 @@ new class extends Component
                         {{ $error }}
                     </div>
                 @endif
-
-                {{-- Slide Action --}}
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Slide Action</div>
-                    <div class="nt-muted text-sm mt-2">
-                        Drag the handle left/center/right. On release it snaps and triggers an action (like a radio group).
-                    </div>
-
-                    <div class="mt-4">
-                        <div
-                            class="nt-slide"
-                            x-data
-                            data-slide
-                        >
-                            <div class="nt-slide-track">
-                                <div class="nt-slide-tick nt-slide-tick--left">◀</div>
-                                <div class="nt-slide-tick nt-slide-tick--center">●</div>
-                                <div class="nt-slide-tick nt-slide-tick--right">▶</div>
-
-                                <div class="nt-slide-fill" data-fill></div>
-
-                                <div
-                                    class="nt-slide-knob"
-                                    data-knob
-                                    role="slider"
-                                    aria-label="Slide Action"
-                                    aria-valuemin="0"
-                                    aria-valuemax="2"
-                                    aria-valuenow="{{ $slideChoice === 'left' ? 0 : ($slideChoice === 'center' ? 1 : 2) }}"
-                                    tabindex="0"
-                                >
-                                    <span class="nt-slide-knob-dot"></span>
-                                </div>
-                            </div>
-
-                            <div class="mt-3 flex items-center justify-between text-xs">
-                                <span class="nt-pill">
-                                    <span class="nt-muted">Choice:</span>
-                                    <span class="font-extrabold" style="text-transform: uppercase;">{{ $slideChoice }}</span>
-                                </span>
-
-                                @if ($slideLastAction)
-                                    <span class="nt-muted">{{ $slideLastAction }}</span>
-                                @else
-                                    <span class="nt-muted">Slide to trigger.</span>
-                                @endif
-                            </div>
-
-                            <div class="mt-3 flex justify-center gap-2 flex-wrap">
-                                <button class="nt-card px-4 py-2 font-extrabold text-sm" wire:click="slidePicked('left')">Left</button>
-                                <button class="nt-card px-4 py-2 font-extrabold text-sm" wire:click="slidePicked('center')">Center</button>
-                                <button class="nt-card px-4 py-2 font-extrabold text-sm" wire:click="slidePicked('right')">Right</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             @endif
         </div>
     </div>

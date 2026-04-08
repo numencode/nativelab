@@ -10,6 +10,28 @@ a real app: it already includes navigation, a consistent UI theme, and working e
 
 ---
 
+## 📱 APK Release (Testing on Android)
+
+For quick testing without setting up the full Android SDK/JDK environment, 
+a pre-compiled production build is available in the root of this repository.
+
+### Quick Start
+1. **Locate the file:** `NativeLab-release.zip` (found in the root directory).
+2. **Unzip:** Extract the `.zip` file on your computer or phone to get the `NativeLab-release.apk`.
+3. **Transfer:** Copy the `.apk` file to your Android device via USB, Google Drive, or local transfer.
+4. **Install:** Open the `.apk` on your phone to begin the installation.
+
+> [!IMPORTANT]  
+> **Sideloading:** Since this is a development build not distributed via the Google Play Store, Android will trigger a "Blocked by Play Protect" or "Unknown Sources" warning.
+> - Tap **"Install Anyway"** or **"Settings > Allow from this source"** to proceed.
+
+### Deployment Details
+- **NativePHP Mobile:** v3.1
+- **Environment:** Production
+- **Minimum Requirements:** Android 8.0 (API 26) or higher.
+
+---
+
 ## Tech stack
 
 - **Laravel 12**
