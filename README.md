@@ -10,28 +10,6 @@ a real app: it already includes navigation, a consistent UI theme, and working e
 
 ---
 
-## 📱 APK Release (Testing on Android)
-
-For quick testing without setting up the full Android SDK/JDK environment, 
-a pre-compiled production build is available in the root of this repository.
-
-### Quick Start
-1. **Locate the file:** `NativeLab-release.zip` (found in the root directory).
-2. **Unzip:** Extract the `.zip` file on your computer or phone to get the `NativeLab-release.apk`.
-3. **Transfer:** Copy the `.apk` file to your Android device via USB, Google Drive, or local transfer.
-4. **Install:** Open the `.apk` on your phone to begin the installation.
-
-> [!IMPORTANT]  
-> **Sideloading:** Since this is a development build not distributed via the Google Play Store, Android will trigger a "Blocked by Play Protect" or "Unknown Sources" warning.
-> - Tap **"Install Anyway"** or **"Settings > Allow from this source"** to proceed.
-
-### Deployment Details
-- **NativePHP Mobile:** v3.1
-- **Environment:** Production
-- **Minimum Requirements:** Android 8.0 (API 26) or higher.
-
----
-
 ## Tech stack
 
 - **Laravel 12**
@@ -62,7 +40,7 @@ NativeLab exposes a simple Home screen with sections (one per plugin / capabilit
 - **Composer**
 - **Node.js + npm**
 - Native toolchain:
-  - **Android**: Android Studio + Android SDK + emulator
+  - **Android**: Android Studio + Android SDK + JDK (17+) + emulator
   - **iOS**: Xcode + iOS Simulator (macOS only)
 
 Check out the [NativePHP docs](https://nativephp.com/docs) for more info.
@@ -160,6 +138,51 @@ php artisan native:jump
 
 > Tip: If Jump (or native runtime) throws a “manifest.json missing” error,
 > it means you forgot to run `npm run build` on that machine.
+
+---
+
+## 📱 Building the Android App (APK)
+
+To test the app on a physical device, you must compile the project into an APK.
+This process requires that you have the **Android SDK** and **JDK 17+** installed on your machine.
+
+### 1. Generate Build Credentials
+Before packaging, you must generate the necessary signing keys. NativePHP handles this via a guided CLI tool:
+
+```bash
+php artisan native:credentials
+```
+*Follow the prompts to set your developer name and passwords. 
+This will generate a `native-credentials.json` and a keystore file.  
+**Do not share these files publicly.***
+
+### 2. Link Storage
+Ensure your public assets are correctly linked so that the app can serve icons and recorded media:
+
+```bash
+php artisan storage:link
+```
+
+### 3. Package the APK
+Run the following command to compile the production-ready binary:
+
+```bash
+php artisan native:package android --build-type=release
+```
+
+### 4. Installation
+Once the build completes, your APK will be located in the `dist/` or `release/` folder.
+1. **Transfer:** Move the `.apk` file to your phone via USB or cloud storage.
+2. **Install:** Open the file on your Android device.
+
+> [!IMPORTANT]  
+> **Sideloading:** Because this is a self-signed build, Android will show a "Blocked by Play Protect" warning.
+> Tap **"More Details"** and then **"Install Anyway"** to proceed.
+
+### Build Details
+- **Runtime:** NativePHP Mobile v3.1
+- **Min. Requirements:** Android 8.0 (API 26)
+- **Target:** Universal APK (ARM64/X86_64)
 
 ---
 
@@ -336,7 +359,7 @@ https://nativephp.com/docs/mobile
 ## Preview
 
 <p align="center">
-    <img src="https://github.com/numencode/nativelab/blob/main/public/app.jpg?raw=true" alt="NumenCode NativeLab Screenshot" />
+    <img src="https://github.com/numencode/nativelab/blob/main/public/NativeLab.png?raw=true" alt="NumenCode NativeLab Screenshot" />
 </p>
 
 ---

@@ -1,13 +1,14 @@
 <?php
 
 use Livewire\Volt\Component;
+use App\Traits\HasNativeCheck;
 use Native\Mobile\Facades\Dialog;
 use Native\Mobile\Attributes\OnNative;
 use Native\Mobile\Events\Alert\ButtonPressed;
 
 new class extends Component
 {
-    public bool $isNative = false;
+    use HasNativeCheck;
 
     public string $title = 'Confirm Action';
     public string $message = 'Are you sure you want to continue?';
@@ -19,11 +20,6 @@ new class extends Component
 
     public ?string $status = null;
     public ?string $error = null;
-
-    public function mount(): void
-    {
-        $this->isNative = ! empty(env('NATIVEPHP_PLATFORM'));
-    }
 
     public function showAlertOk(): void
     {
@@ -102,86 +98,86 @@ new class extends Component
                 </p>
             </div>
 
-            @if (! $isNative)
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-semibold">Not running in NativePHP</div>
-                    <div class="nt-muted text-sm mt-1">
-                        Dialog APIs work only in the Android/iOS runtime (emulator/Jump).
-                    </div>
-                </div>
-            @else
-                {{-- Actions --}}
-                <div class="mt-5 flex flex-wrap justify-center gap-3">
-                    <button wire:click="showAlertOk" class="nt-btn">💡 Alert</button>
-                    <button wire:click="showConfirm" class="nt-btn">✅ Confirm</button>
-                    <button wire:click="showThreeButtons" class="nt-btn">🎛️ 3 Buttons</button>
-                </div>
+            {{-- Actions --}}
+            <div class="mt-5 flex flex-wrap justify-center gap-3">
+                <button wire:click="showAlertOk" class="nt-btn">💡 Alert</button>
+                <button wire:click="showConfirm" class="nt-btn">✅ Confirm</button>
+                <button wire:click="showThreeButtons" class="nt-btn">🎛️ 3 Buttons</button>
+            </div>
 
-                {{-- Confirm inputs --}}
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Confirm dialog content</div>
+            {{-- Confirm inputs --}}
+            <div class="mt-5 nt-card p-4">
+                <div class="font-extrabold">Confirm dialog content</div>
 
-                    <div class="mt-3 grid gap-3">
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">Title</label>
-                            <input type="text" wire:model.defer="title"
-                                   class="w-full rounded-2xl px-4 py-3"
-                                   style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
-                        </div>
-
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">Message</label>
-                            <textarea wire:model.defer="message" rows="3"
-                                      class="w-full rounded-2xl px-4 py-3"
-                                      style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none; resize: none;"></textarea>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button wire:click="showConfirm" class="nt-btn">Open Confirm</button>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Toast --}}
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Toast</div>
-
-                    <div class="mt-3">
-                        <label class="block nt-muted text-xs mb-2">Toast message</label>
-                        <input type="text" wire:model.defer="toastMessage"
+                <div class="mt-3 grid gap-3">
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">Title</label>
+                        <input type="text" wire:model.defer="title"
                                class="w-full rounded-2xl px-4 py-3"
                                style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
                     </div>
 
-                    <div class="mt-4 flex justify-center">
-                        <button wire:click="showToast" class="nt-btn">Show Toast</button>
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">Message</label>
+                        <textarea wire:model.defer="message" rows="3"
+                                  class="w-full rounded-2xl px-4 py-3"
+                                  style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none; resize: none;"></textarea>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button wire:click="showConfirm" class="nt-btn">Open Confirm</button>
                     </div>
                 </div>
+            </div>
 
-                {{-- Result --}}
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Last button pressed</div>
+            {{-- Toast --}}
+            <div class="mt-5 nt-card p-4">
+                <div class="font-extrabold">Toast</div>
 
-                    @if ($lastLabel !== null)
-                        <div class="mt-2 text-sm">
-                            <span class="nt-muted">Index:</span> {{ $lastIndex }}
-                            <span class="nt-muted"> • Label:</span> <span class="font-semibold">{{ $lastLabel }}</span>
-                        </div>
-                    @else
-                        <div class="mt-2 text-sm nt-muted">No button pressed yet.</div>
-                    @endif
+                <div class="mt-3">
+                    <label class="block nt-muted text-xs mb-2">Toast message</label>
+                    <input type="text" wire:model.defer="toastMessage"
+                           class="w-full rounded-2xl px-4 py-3"
+                           style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
                 </div>
 
-                @if ($status)
-                    <div class="mt-4 text-center nt-muted text-sm">{{ $status }}</div>
-                @endif
+                <div class="mt-4 flex justify-center">
+                    <button wire:click="showToast" class="nt-btn">Show Toast</button>
+                </div>
+            </div>
 
-                @if ($error)
-                    <div class="mt-4 text-center" style="color:#ff6b6b; font-size: 13px;">
-                        {{ $error }}
+            {{-- Result --}}
+            <div class="mt-5 nt-card p-4">
+                <div class="font-extrabold">Last button pressed</div>
+
+                @if ($lastLabel !== null)
+                    <div class="mt-2 text-sm">
+                        <span class="nt-muted">Index:</span> {{ $lastIndex }}
+                        <span class="nt-muted"> • Label:</span> <span class="font-semibold">{{ $lastLabel }}</span>
                     </div>
+                @else
+                    <div class="mt-2 text-sm nt-muted">No button pressed yet.</div>
                 @endif
+            </div>
+
+            @if ($status)
+                <div class="mt-4 text-center nt-muted text-sm">{{ $status }}</div>
+            @endif
+
+            @if ($error)
+                <div class="mt-4 text-center" style="color:#ff6b6b; font-size: 13px;">
+                    {{ $error }}
+                </div>
             @endif
         </div>
+
+        @if (!$isNative)
+            <div class="mt-5 nt-card p-4">
+                <div class="font-semibold">Not running in NativePHP</div>
+                <div class="nt-muted text-sm mt-1">
+                    This plugin action needs the Android/iOS runtime in order to function properly.
+                </div>
+            </div>
+        @endif
     </div>
 </div>

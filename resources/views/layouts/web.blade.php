@@ -146,24 +146,24 @@
         <div class="label">Home</div>
     </a>
 
+    <a href="/dialog" class="{{ request()->is('dialog') ? 'active' : '' }}">
+        <div class="icon">🔔</div>
+        <div class="label">Dialog</div>
+    </a>
+
     <a href="/camera" class="{{ request()->is('camera') ? 'active' : '' }}">
         <div class="icon">📷</div>
         <div class="label">Camera</div>
     </a>
 
-    <a href="/browser" class="{{ request()->is('browser') ? 'active' : '' }}">
-        <div class="icon">🌐</div>
-        <div class="label">Browser</div>
-    </a>
-
-    <a href="/audio" class="{{ request()->is('audio') ? 'active' : '' }}">
-        <div class="icon">🎙️</div>
-        <div class="label">Audio</div>
+    <a href="/device" class="{{ request()->is('device') ? 'active' : '' }}">
+        <div class="icon">📱️</div>
+        <div class="label">Device</div>
     </a>
 
     <a href="/system" class="{{ request()->is('system') ? 'active' : '' }}">
-        <div class="icon">🧩</div>
-        <div class="label">More</div>
+        <div class="icon">⚙</div>
+        <div class="label">Settings</div>
     </a>
 </nav>
 

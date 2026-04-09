@@ -2,11 +2,14 @@
 
 use Livewire\Attributes\On;
 use Livewire\Volt\Component;
+use App\Traits\HasNativeCheck;
 use Native\Mobile\Facades\Camera;
 use Native\Mobile\Events\Camera\PhotoTaken;
 
 new class extends Component
 {
+    use HasNativeCheck;
+
     public ?string $photoPath = null;
     public ?string $photoDataUrl = null;
 
@@ -50,7 +53,7 @@ new class extends Component
     <div class="max-w-md mx-auto">
         <div class="nt-card p-5">
             <div class="text-center">
-                <h2 class="text-xl font-extrabold m-0">Camera Playground</h2>
+                <h2 class="text-xl font-extrabold m-0">Camera</h2>
                 <p class="nt-muted text-sm mt-2 mb-0">
                     Take a photo using the native<br>camera and instantly preview it below.
                 </p>
@@ -80,6 +83,15 @@ new class extends Component
                 @endif
             </div>
         </div>
+
+        @if (!$isNative)
+            <div class="mt-5 nt-card p-4">
+                <div class="font-semibold">Not running in NativePHP</div>
+                <div class="nt-muted text-sm mt-1">
+                    This plugin action needs the Android/iOS runtime in order to function properly.
+                </div>
+            </div>
+        @endif
     </div>
 </div>
 

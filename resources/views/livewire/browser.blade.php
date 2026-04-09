@@ -1,10 +1,13 @@
 <?php
 
 use Livewire\Volt\Component;
+use App\Traits\HasNativeCheck;
 use Native\Mobile\Facades\Browser;
 
 new class extends Component
 {
+    use HasNativeCheck;
+
     public string $url = 'https://www.numencode.com';
     public ?string $status = null;
     public ?string $error = null;
@@ -110,5 +113,14 @@ new class extends Component
                 </ul>
             </div>
         </div>
+
+        @if (!$isNative)
+            <div class="mt-5 nt-card p-4">
+                <div class="font-semibold">Not running in NativePHP</div>
+                <div class="nt-muted text-sm mt-1">
+                    This plugin action needs the Android/iOS runtime in order to function properly.
+                </div>
+            </div>
+        @endif
     </div>
 </div>

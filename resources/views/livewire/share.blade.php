@@ -1,11 +1,12 @@
 <?php
 
 use Livewire\Volt\Component;
+use App\Traits\HasNativeCheck;
 use Native\Mobile\Facades\Share;
 
 new class extends Component
 {
-    public bool $isNative = false;
+    use HasNativeCheck;
 
     public string $title = 'NativeLab';
     public string $text  = 'Check out NativePHP!';
@@ -17,11 +18,6 @@ new class extends Component
     public ?string $lastFilePath = null;
     public ?string $status = null;
     public ?string $error = null;
-
-    public function mount(): void
-    {
-        $this->isNative = (bool) (getenv('NATIVEPHP_PLATFORM') ?: false);
-    }
 
     public function shareUrl(): void
     {
@@ -82,96 +78,96 @@ new class extends Component
                 </p>
             </div>
 
-            @if (! $isNative)
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-semibold">Not running in NativePHP</div>
-                    <div class="nt-muted text-sm mt-1">
-                        Sharing works only inside the Android/iOS runtime (emulator/Jump).
+            <div class="mt-5 nt-card p-4">
+                <div class="font-extrabold">Share a URL</div>
+
+                <div class="mt-3 grid gap-3">
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">Title</label>
+                        <input type="text" wire:model.defer="title"
+                               class="w-full rounded-2xl px-4 py-3"
+                               style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
+                    </div>
+
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">Text</label>
+                        <input type="text" wire:model.defer="text"
+                               class="w-full rounded-2xl px-4 py-3"
+                               style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
+                    </div>
+
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">URL</label>
+                        <input type="text" wire:model.defer="url"
+                               class="w-full rounded-2xl px-4 py-3"
+                               style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
+                    </div>
+
+                    <div class="flex justify-center">
+                        <button wire:click="shareUrl" class="nt-btn">🔗 Share URL</button>
                     </div>
                 </div>
-            @else
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Share a URL</div>
+            </div>
 
-                    <div class="mt-3 grid gap-3">
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">Title</label>
-                            <input type="text" wire:model.defer="title"
-                                   class="w-full rounded-2xl px-4 py-3"
-                                   style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
-                        </div>
-
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">Text</label>
-                            <input type="text" wire:model.defer="text"
-                                   class="w-full rounded-2xl px-4 py-3"
-                                   style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
-                        </div>
-
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">URL</label>
-                            <input type="text" wire:model.defer="url"
-                                   class="w-full rounded-2xl px-4 py-3"
-                                   style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button wire:click="shareUrl" class="nt-btn">🔗 Share URL</button>
-                        </div>
-                    </div>
+            <div class="mt-5 nt-card p-4">
+                <div class="font-extrabold">Share a file</div>
+                <div class="nt-muted text-sm mt-2">
+                    This generates a text file in <code>storage/app/share</code> and shares it.
                 </div>
 
-                <div class="mt-5 nt-card p-4">
-                    <div class="font-extrabold">Share a file</div>
-                    <div class="nt-muted text-sm mt-2">
-                        This generates a text file in <code>storage/app/share</code> and shares it.
+                <div class="mt-3 grid gap-3">
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">File name</label>
+                        <input type="text" wire:model.defer="fileName"
+                               class="w-full rounded-2xl px-4 py-3"
+                               style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
                     </div>
 
-                    <div class="mt-3 grid gap-3">
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">File name</label>
-                            <input type="text" wire:model.defer="fileName"
-                                   class="w-full rounded-2xl px-4 py-3"
-                                   style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none;">
-                        </div>
-
-                        <div>
-                            <label class="block nt-muted text-xs mb-2">Contents</label>
-                            <textarea rows="5" wire:model.defer="fileContents"
-                                      class="w-full rounded-2xl px-4 py-3"
-                                      style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none; resize:none;"></textarea>
-                        </div>
-
-                        <div class="flex justify-center">
-                            <button wire:click="generateAndShareFile" class="nt-btn">📄 Generate & Share</button>
-                        </div>
-
-                        @if ($lastFilePath)
-                            <div class="nt-muted text-xs break-all">
-                                Last file: {{ $lastFilePath }}
-                            </div>
-                        @endif
+                    <div>
+                        <label class="block nt-muted text-xs mb-2">Contents</label>
+                        <textarea rows="5" wire:model.defer="fileContents"
+                                  class="w-full rounded-2xl px-4 py-3"
+                                  style="background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.10); color: rgba(255,255,255,.92); outline: none; resize:none;"></textarea>
                     </div>
+
+                    <div class="flex justify-center">
+                        <button wire:click="generateAndShareFile" class="nt-btn">📄 Generate & Share</button>
+                    </div>
+
+                    @if ($lastFilePath)
+                        <div class="nt-muted text-xs break-all">
+                            Last file: {{ $lastFilePath }}
+                        </div>
+                    @endif
                 </div>
+            </div>
 
-                @if ($status)
-                    <div class="mt-4 text-center nt-muted text-sm">{{ $status }}</div>
-                @endif
+            @if ($status)
+                <div class="mt-4 text-center nt-muted text-sm">{{ $status }}</div>
+            @endif
 
-                @if ($error)
-                    <div class="mt-4 text-center" style="color:#ff6b6b; font-size: 13px;">
-                        {{ $error }}
-                    </div>
-                @endif
-
-                <div class="mt-6 nt-card p-4">
-                    <div class="font-extrabold">Notes</div>
-                    <ul class="mt-3 text-sm nt-muted" style="margin:0; padding-left:18px;">
-                        <li>Share sheet doesn’t report which app was chosen or if the user cancelled.</li>
-                        <li>For files: the path must be absolute and the file must exist before calling <code>Share::file</code>.</li>
-                    </ul>
+            @if ($error)
+                <div class="mt-4 text-center" style="color:#ff6b6b; font-size: 13px;">
+                    {{ $error }}
                 </div>
             @endif
+
+            <div class="mt-6 nt-card p-4">
+                <div class="font-extrabold">Notes</div>
+                <div class="nt-muted text-sm mt-2">
+                    Share sheet doesn’t report which app was chosen or if the user cancelled.<br>
+                    For files: the path must be absolute and the file must exist before calling <code>Share::file</code>.
+                </div>
+            </div>
         </div>
+
+        @if (!$isNative)
+            <div class="mt-5 nt-card p-4">
+                <div class="font-semibold">Not running in NativePHP</div>
+                <div class="nt-muted text-sm mt-1">
+                    This plugin action needs the Android/iOS runtime in order to function properly.
+                </div>
+            </div>
+        @endif
     </div>
 </div>

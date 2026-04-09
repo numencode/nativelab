@@ -5,14 +5,14 @@ use Livewire\Volt\Component;
 new class extends Component
 {
     public array $items = [
-        ['label' => 'Camera',  'sub' => 'Snap a photo and preview it instantly.',     'url' => '/camera',  'icon' => '📷', 'tone' => 'pink'],
-        ['label' => 'Browser', 'sub' => 'Open links in-app or in system browser.',    'url' => '/browser', 'icon' => '🌐', 'tone' => 'blue'],
-        ['label' => 'Dialog',  'sub' => 'Try alerts, confirms, and toast messages.',  'url' => '/dialog',  'icon' => '💬', 'tone' => 'green'],
-        ['label' => 'Audio',   'sub' => 'Record voice clips and play them back.',     'url' => '/audio',   'icon' => '🎙️', 'tone' => 'pink'],
-        ['label' => 'Share',   'sub' => 'Open the native share sheet.',               'url' => '/share',   'icon' => '🔁', 'tone' => 'blue'],
-        ['label' => 'Device',  'sub' => 'Read info, vibrate, and toggle flashlight.', 'url' => '/device',  'icon' => '⚙️', 'tone' => 'mix'],
-        ['label' => 'Network', 'sub' => 'Check online status and connection type.',   'url' => '/network', 'icon' => '📡', 'tone' => 'mix'],
-        ['label' => 'System',  'sub' => 'Open this app’s system settings.',           'url' => '/system',  'icon' => '🧩', 'tone' => 'green'],
+        ['label' => 'Camera',  'sub' => 'Capture photos and manage image previews.',  'url' => '/camera',  'icon' => '📸', 'tone' => 'pink'],
+        ['label' => 'Browser', 'sub' => 'Launch external links or in-app webviews.',  'url' => '/browser', 'icon' => '🌐', 'tone' => 'blue'],
+        ['label' => 'Dialog',  'sub' => 'Test native alerts, confirms, and toasts.',  'url' => '/dialog',  'icon' => '🔔', 'tone' => 'green'],
+        ['label' => 'Audio',   'sub' => 'Capture voice clips with native recording.', 'url' => '/audio',   'icon' => '🎙️', 'tone' => 'pink'],
+        ['label' => 'Share',   'sub' => 'Trigger the system-level share sheet.',      'url' => '/share',   'icon' => '📤', 'tone' => 'blue'],
+        ['label' => 'Device',  'sub' => 'Access hardware info and haptic feedback.',  'url' => '/device',  'icon' => '📱', 'tone' => 'mix'],
+        ['label' => 'Network', 'sub' => 'Monitor real-time connectivity status.',     'url' => '/network', 'icon' => '📶', 'tone' => 'mix'],
+        ['label' => 'System',  'sub' => 'Manage app permissions and OS settings.',    'url' => '/system',  'icon' => '⚙️', 'tone' => 'green'],
     ];
 };
 
